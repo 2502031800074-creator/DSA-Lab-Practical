@@ -1,0 +1,92 @@
+Experiment 4: Infix to Postfix Conversion using Stack
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) {
+    if (top == MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        stack[++top] = c;
+    }
+}
+
+char pop() {
+    if (top == -1) {
+        return -1;
+    } else {
+        return stack[top--];
+    }
+}
+
+char peek() {
+    if (top == -1) return -1;
+    return stack[top];
+}
+
+int precedence(char c) {
+    if (c == '^')
+        return 3;
+    else if (c == '*' || c == '/')
+        return 2;
+    else if (c == '+' || c == '-')
+        return 1;
+    else
+        return -1;
+}
+
+void infixToPostfix(char* infix, char* postfix) {
+    int i, j = 0;
+    int len = strlen(infix);
+
+    for (i = 0; i < len; i++) {
+        char c = infix[i];
+
+        if (isalnum(c)) {
+            postfix[j++] = c;
+        }
+        else if (c == '(') {
+            push(c);
+        }
+        else if (c == ')') {
+            while (top != -1 && peek() != '(') {
+                postfix[j++] = pop();
+            }
+            if (top != -1 && peek() == '(') {
+                pop();
+            }
+        }
+        else {
+            while (top != -1 && precedence(c) <= precedence(peek())) {
+                postfix[j++] = pop();
+            }
+            push(c);
+        }
+    }
+
+    while (top != -1) {
+        postfix[j++] = pop();
+    }
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX] = "A+B*C-(D/E^F)*G";
+    char postfix[MAX];
+
+    printf("Infix expression: %s\n", infix);
+    infixToPostfix(infix, postfix);
+    printf("Postfix expression: %s\n", postfix);
+
+    return 0;
+}
+
+output : Infix expression: A+B*C-(D/E^F)*G
+Postfix expression: ABC*+DEF^/G*-
