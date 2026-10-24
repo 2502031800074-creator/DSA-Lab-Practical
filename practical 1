@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+void byValue(int num) {
+    num = num + 10; // Changes only the local copy
+}
+
+void byReference(int *ptr) {
+    *ptr = *ptr + 10; // Changes the value at the original memory address
+}
+
+int main() {
+    int a = 5;
+    int *p = &a; // Pointer declaration storing the address of 'a'
+
+    // 1. Call by Value
+    byValue(a);
+    printf("After Call by Value: %d\n", a);
+
+    // 2. Call by Reference
+    byReference(p); // Passing the address using pointer 'p'
+    printf("After Call by Reference: %d\n", a);
+
+    return 0;
+}
+output : After Call by Value: 5
+After Call by Reference: 15
