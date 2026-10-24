@@ -1,0 +1,100 @@
+#include <stdio.h>
+
+#define MAX 100
+
+void display(int arr[], int n) {
+    if (n == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+    printf("Array elements: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int insertElement(int arr[], int n, int element, int pos) {
+    if (n >= MAX) {
+        printf("Array overflow!\n");
+        return n;
+    }
+    if (pos < 0 || pos > n) {
+        printf("Invalid position!\n");
+        return n;
+    }
+    for (int i = n - 1; i >= pos; i--) {
+        arr[i + 1] = arr[i];
+    }
+    arr[pos] = element;
+    printf("Element %d inserted at position %d successfully.\n", element, pos + 1);
+    return n + 1;
+}
+
+int deleteElement(int arr[], int n, int pos) {
+    if (n <= 0) {
+        printf("Array underflow!\n");
+        return n;
+    }
+    if (pos < 0 || pos >= n) {
+        printf("Invalid position!\n");
+        return n;
+    }
+    int val = arr[pos];
+    for (int i = pos; i < n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    printf("Deleted element: %d from position %d\n", val, pos + 1);
+    return n - 1;
+}
+
+void searchElement(int arr[], int n, int key) {
+    int found = 0;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            printf("Element %d found at position %d (index %d).\n", key, i + 1, i);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Element %d not found in the array.\n", key);
+    }
+}
+
+int main() {
+    int arr[MAX], n = 5;
+    arr[0] = 10; arr[1] = 20; arr[2] = 30; arr[3] = 40; arr[4] = 50;
+
+    printf("--- Traversal (Initial Array) ---\n");
+    display(arr, n);
+
+    printf("\n--- Insertion Operation ---\n");
+    n = insertElement(arr, n, 25, 2); // Insert 25 at index 2 (position 3)
+    display(arr, n);
+
+    printf("\n--- Deletion Operation ---\n");
+    n = deleteElement(arr, n, 3); // Delete element at index 3
+    display(arr, n);
+
+    printf("\n--- Searching Operation ---\n");
+    searchElement(arr, n, 25);
+    searchElement(arr, n, 100);
+
+    return 0;
+}
+
+output :  --- Traversal (Initial Array) ---
+Array elements: 10 20 30 40 50 
+
+--- Insertion Operation ---
+Element 25 inserted at position 3 successfully.
+Array elements: 10 20 25 30 40 50 
+
+--- Deletion Operation ---
+Deleted element: 30 from position 4
+Array elements: 10 20 25 40 50 
+
+--- Searching Operation ---
+Element 25 found at position 3 (index 2).
+Element 100 not found in the array.
