@@ -1,0 +1,89 @@
+Experiment 3: Stack Implementation using Array (PUSH, POP, PEEK, CHANGE, DISPLAY)
+
+#include <stdio.h>
+#define MAX 5
+
+int stack[MAX];
+int top = -1;
+
+void push(int val) {
+    if (top == MAX - 1) {
+        printf("Stack Overflow! Cannot push %d\n", val);
+    } else {
+        top++;
+        stack[top] = val;
+        printf("%d pushed to stack.\n", val);
+    }
+}
+
+void pop() {
+    if (top == -1) {
+        printf("Stack Underflow! No element to pop.\n");
+    } else {
+        printf("Popped element: %d\n", stack[top]);
+        top--;
+    }
+}
+
+void peek() {
+    if (top == -1) {
+        printf("Stack is empty.\n");
+    } else {
+        printf("Top element is: %d\n", stack[top]);
+    }
+}
+
+void change(int pos, int newVal) {
+    int index = top - (pos - 1); // 1-based index from top
+    if (index < 0 || index > top) {
+        printf("Invalid position for change!\n");
+    } else {
+        stack[index] = newVal;
+        printf("Element at position %d from top changed to %d.\n", pos, newVal);
+    }
+}
+
+void display() {
+    if (top == -1) {
+        printf("Stack is empty.\n");
+    } else {
+        printf("Stack elements (top to bottom): ");
+        for (int i = top; i >= 0; i--) {
+            printf("%d ", stack[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    push(10);
+    push(20);
+    push(30);
+    display();
+
+    peek();
+    
+    pop();
+    display();
+
+    push(40);
+    push(50);
+    display();
+
+    change(2, 25); // Change element at position 2 from top
+    display();
+
+    return 0;
+}
+output : 10 pushed to stack.
+20 pushed to stack.
+30 pushed to stack.
+Stack elements (top to bottom): 30 20 10 
+Top element is: 30
+Popped element: 30
+Stack elements (top to bottom): 20 10 
+40 pushed to stack.
+50 pushed to stack.
+Stack elements (top to bottom): 50 40 20 10 
+Element at position 2 from top changed to 25.
+Stack elements (top to bottom): 50 25 20 10
